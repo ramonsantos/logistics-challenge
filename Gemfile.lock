@@ -271,9 +271,14 @@ GEM
     unicode-display_width (2.6.0)
     uri (0.13.1)
     useragent (0.16.10)
+    versionist (2.0.1)
+      activesupport (>= 3)
+      railties (>= 3)
+      yard (~> 0.9.20)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    yard (0.9.37)
     zeitwerk (2.7.1)
 
 PLATFORMS
@@ -306,6 +311,7 @@ DEPENDENCIES
   simplecov
   thruster
   tzinfo-data
+  versionist
 
 BUNDLED WITH
    2.5.22
