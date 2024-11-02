@@ -30,3 +30,9 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Test coverage files
+coverage
+
+# VSCode
+/.vscode/*
