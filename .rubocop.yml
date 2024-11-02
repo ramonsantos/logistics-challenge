@@ -39,6 +39,9 @@ Metrics/MethodLength:
 Naming/VariableNumber:
   Enabled: false
 
+Style/AccessorGrouping:
+  EnforcedStyle: separated
+
 Style/ArgumentsForwarding:
   Enabled: false
 
