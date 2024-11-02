@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: Logistics challenge API
+  description: Documentation of logistics challenge API
+  version: 1.0.0
+tags:
+  - name: orders
+    description: Orders
+  - name: order_products
+    description: Order products
+servers:
+  - url: 'http://localhost:3000'
+    description: Development server
+paths:
+  /order_products/import:
+    post:
+      tags:
+       - order_products
+      summary: Import Order Products
+      description: Imports a list of order products from a file.
+      operationId: orderProductsImport
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  format: binary
+                  description: The data to be imported
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportOrderProductsResponse'
+        400:
+          description: Bab Request
+        422:
+          description: UnprocessableEntity
+components:
+  schemas:
+    ImportOrderProductsResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            info:
+              type: string
+              description: Success message
+        data:
+          type: object
+      example:
+        data: null
+        meta:
+          info: "The import process will run in the background."
