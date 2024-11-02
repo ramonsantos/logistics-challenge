@@ -8,6 +8,7 @@ gem 'puma', '>= 5.0'
 gem 'rack-cors'
 gem 'rails', '~> 8.0.0.rc2'
 gem 'redis'
+gem 'sidekiq', '~> 7.3'
 gem 'thruster', require: false
 gem 'tzinfo-data', platforms: %i[windows jruby]
 gem 'versionist'
