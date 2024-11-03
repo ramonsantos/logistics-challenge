@@ -15,8 +15,8 @@ require 'rspec/rails'
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
-rescue ActiveRecord::PendingMigrationError => e
-  abort(e.to_s.strip)
+rescue ActiveRecord::PendingMigrationError => error
+  abort(error.to_s.strip)
 end
 
 RSpec.configure do |config|
