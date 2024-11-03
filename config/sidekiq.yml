@@ -1,3 +1,4 @@
 :concurrency: 50
 :queues:
   - [enqueue_order_products_to_import, 1]
+  - [import_order_product, 2]

@@ -6,6 +6,8 @@ class EnqueueOrderProductsToImportJob
   sidekiq_options queue: 'enqueue_order_products_to_import', retry: 5
 
   def perform(file_content_key)
-    # Do something later
+    lines = RedisService.get(file_content_key).lines.zip
+
+    ImportOrderProductJob.perform_bulk(lines, batch_size: 1000)
   end
 end
