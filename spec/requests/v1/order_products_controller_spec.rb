@@ -20,7 +20,7 @@ RSpec.describe V1::OrderProductsController, type: :request do
 
       before do
         allow(RedisService).to receive(:set).and_return('OK')
-        allow(EnqueueOrderProductsToImportJob).to receive(:perform_later)
+        allow(EnqueueOrderProductsToImportJob).to receive(:perform_async)
 
         post(import_order_products_path, params: params)
       end

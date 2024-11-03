@@ -24,14 +24,14 @@ RSpec.describe ReceivesOrderProductsToImportService, type: :service do
       end
 
       before do
-        allow(EnqueueOrderProductsToImportJob).to receive(:perform_later)
+        allow(EnqueueOrderProductsToImportJob).to receive(:perform_async)
 
         subject.call
       end
 
       it 'stores the file content in Redis and enqueues the job' do
         expect(RedisService).to have_received(:set).with(expected_redis_key, expected_file_content).once
-        expect(EnqueueOrderProductsToImportJob).to have_received(:perform_later).with(expected_redis_key).once
+        expect(EnqueueOrderProductsToImportJob).to have_received(:perform_async).with(expected_redis_key).once
       end
     end
 

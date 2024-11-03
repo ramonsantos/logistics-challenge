@@ -7,7 +7,7 @@ class ReceivesOrderProductsToImportService < ApplicationService
 
   def call
     RedisService.set(file_redis_key, file_content)
-    EnqueueOrderProductsToImportJob.perform_later(file_redis_key)
+    EnqueueOrderProductsToImportJob.perform_async(file_redis_key)
   rescue StandardError => _error
     raise(ApplicationError, 'Error importing order product.')
   end
