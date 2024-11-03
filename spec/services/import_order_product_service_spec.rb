@@ -18,13 +18,19 @@ RSpec.describe ImportOrderProductService, type: :service do
       end
     end
 
+    before { allow(UpdateTotalOfOrderJob).to receive(:perform_async) }
+
     context 'when successful' do
       let(:after_count) { { users: 1, orders: 1, order_products: 1 } }
 
       context 'when create user, order, and order_product' do
         let(:before_count) { { users: 0, orders: 0, order_products: 0 } }
 
-        it { expect { subject.call }.to change(model_count_proc, :call).from(before_count).to(after_count) }
+        it 'creates user, order, and order_products' do
+          expect { subject.call }.to change(model_count_proc, :call).from(before_count).to(after_count)
+
+          expect(UpdateTotalOfOrderJob).to have_received(:perform_async).with(798).once
+        end
       end
 
       context 'when user already exists' do
@@ -32,7 +38,11 @@ RSpec.describe ImportOrderProductService, type: :service do
 
         before { create(:user) }
 
-        it { expect { subject.call }.to change(model_count_proc, :call).from(before_count).to(after_count) }
+        it 'creates order and order_products' do
+          expect { subject.call }.to change(model_count_proc, :call).from(before_count).to(after_count)
+
+          expect(UpdateTotalOfOrderJob).to have_received(:perform_async).with(798).once
+        end
       end
 
       context 'when order already exists' do
@@ -43,7 +53,11 @@ RSpec.describe ImportOrderProductService, type: :service do
           create(:order)
         end
 
-        it { expect { subject.call }.to change(model_count_proc, :call).from(before_count).to(after_count) }
+        it 'creates order_products' do
+          expect { subject.call }.to change(model_count_proc, :call).from(before_count).to(after_count)
+
+          expect(UpdateTotalOfOrderJob).to have_received(:perform_async).with(798).once
+        end
       end
     end
 
@@ -54,10 +68,11 @@ RSpec.describe ImportOrderProductService, type: :service do
         create(:user)
       end
 
-      it do
+      it 'does not create entities' do
         expect { subject.call }.to raise_error(ActiveRecord::RecordInvalid)
 
         expect(model_count_proc.call).to eq({ users: 1, orders: 0, order_products: 0 })
+        expect(UpdateTotalOfOrderJob).not_to have_received(:perform_async)
       end
     end
   end

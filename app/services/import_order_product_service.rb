@@ -11,6 +11,8 @@ class ImportOrderProductService < ApplicationService
       import_order
       import_order_product
     end
+
+    UpdateTotalOfOrderJob.perform_async(order_attributes[:order_id])
   end
 
   private
