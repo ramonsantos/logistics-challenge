@@ -27,6 +27,10 @@ Layout/HashAlignment:
 Layout/LineLength:
   Enabled: false
 
+Lint/MissingSuper:
+  AllowedParentClasses:
+    - ApplicationService
+
 Metrics/AbcSize:
   Enabled: false
 
@@ -35,6 +39,9 @@ Metrics/BlockLength:
 
 Metrics/MethodLength:
   Enabled: false
+
+Naming/RescuedExceptionsVariableName:
+  PreferredName: error
 
 Naming/VariableNumber:
   Enabled: false

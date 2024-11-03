@@ -21,11 +21,11 @@ paths:
       operationId: orderProductsImport
       requestBody:
         content:
-          application/x-www-form-urlencoded:
+          multipart/form-data:
             schema:
               type: object
               properties:
-                data:
+                file:
                   type: string
                   format: binary
                   description: The data to be imported
@@ -38,8 +38,10 @@ paths:
                 $ref: '#/components/schemas/ImportOrderProductsResponse'
         400:
           description: Bab Request
-        422:
-          description: UnprocessableEntity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportOrderProductsResponseError'
 components:
   schemas:
     ImportOrderProductsResponse:
@@ -57,3 +59,17 @@ components:
         data: null
         meta:
           info: "The import process will run in the background."
+    ImportOrderProductsResponseError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Error message
+      example:
+        errors:
+          - title: "Error importing order product."
