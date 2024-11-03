@@ -80,6 +80,9 @@ Style/MethodCallWithArgsParentheses:
 Style/RedundantConstantBase:
   Enabled: false
 
+Style/RegexpLiteral:
+  EnforcedStyle: mixed
+
 Style/SymbolArray:
   Enabled: false
 
