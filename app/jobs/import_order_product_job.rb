@@ -5,7 +5,7 @@ class ImportOrderProductJob
 
   sidekiq_options queue: 'import_order_product', retry: 6
 
-  def perform(*args)
-    # Do something later
+  def perform(order_product_line)
+    ImportOrderProductService.new(order_product_line).call
   end
 end
