@@ -20,15 +20,15 @@ class ImportOrderProductService < ApplicationService
   attr_reader :line
 
   def import_user
-    return if User.exists?(user_id: user_attributes[:user_id])
+    return if user
 
-    User.create!(user_attributes)
+    @user = User.create!(user_attributes)
   end
 
   def import_order
-    return if Order.exists?(order_id: order_attributes[:order_id])
+    return if order
 
-    Order.create!(order_attributes)
+    @order = Order.create!(order_attributes)
   end
 
   def import_order_product
@@ -40,14 +40,26 @@ class ImportOrderProductService < ApplicationService
   end
 
   def order_attributes
-    extracted_attributes[:order]
+    extracted_attributes[:order].tap do |order_attributes|
+      order_attributes[:user_id] = user.id
+    end
   end
 
   def order_product_attributes
-    extracted_attributes[:order_product]
+    extracted_attributes[:order_product].tap do |order_product_attributes|
+      order_product_attributes[:order_id] = order.id
+    end
   end
 
   def extracted_attributes
     @extracted_attributes ||= ExtractsAttributesFromLineService.call(line)
+  end
+
+  def user
+    @user ||= User.find_by(user_id: user_attributes[:user_id], name: user_attributes[:name])
+  end
+
+  def order
+    @order ||= Order.find_by(order_id: order_attributes[:order_id], date: order_attributes[:date])
   end
 end

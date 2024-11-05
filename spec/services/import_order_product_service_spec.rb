@@ -8,6 +8,8 @@ RSpec.describe ImportOrderProductService, type: :service do
   let(:line) { '0000000075                                  Bobbie Batz00000007980000000002     1578.5720211116' }
 
   describe '#call' do
+    let(:user) { create(:user) }
+
     let(:model_count_proc) do
       proc do
         {
@@ -36,7 +38,7 @@ RSpec.describe ImportOrderProductService, type: :service do
       context 'when user already exists' do
         let(:before_count) { { users: 1, orders: 0, order_products: 0 } }
 
-        before { create(:user) }
+        before { user }
 
         it 'creates order and order_products' do
           expect { subject.call }.to change(model_count_proc, :call).from(before_count).to(after_count)
@@ -49,8 +51,7 @@ RSpec.describe ImportOrderProductService, type: :service do
         let(:before_count) { { users: 1, orders: 1, order_products: 0 } }
 
         before do
-          create(:user)
-          create(:order)
+          create(:order, user_id: user.id)
         end
 
         it 'creates order_products' do
@@ -65,7 +66,7 @@ RSpec.describe ImportOrderProductService, type: :service do
       before do
         allow(OrderProduct).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)
 
-        create(:user)
+        user
       end
 
       it 'does not create entities' do

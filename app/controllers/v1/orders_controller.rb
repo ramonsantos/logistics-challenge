@@ -10,10 +10,10 @@ class V1::OrdersController < ApplicationController
     orders.each do |order|
       user = order.user
 
-      result[user.id] = { user_id: user.id, name: user.name, orders: [] } if result[user.id].nil?
+      result[user.id] = { user_id: user.user_id, name: user.name, orders: [] } if result[user.id].nil?
 
       result[user.id][:orders] << {
-        order_id: order.id,
+        order_id: order.order_id,
         total: order.total.to_s,
         date: order.date,
 

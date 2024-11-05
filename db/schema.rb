@@ -23,22 +23,27 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_02_174818) do
     t.index ["order_id"], name: "index_order_products_on_order_id"
   end
 
-  create_table "orders", primary_key: "order_id", force: :cascade do |t|
+  create_table "orders", force: :cascade do |t|
+    t.integer "order_id"
     t.date "date"
     t.decimal "total"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["date"], name: "index_orders_on_date"
+    t.index ["order_id", "date"], name: "index_orders_on_order_id_and_date", unique: true
+    t.index ["order_id"], name: "index_orders_on_order_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
-  create_table "users", primary_key: "user_id", force: :cascade do |t|
-    t.string "name"
+  create_table "users", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "name", limit: 45
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "name"], name: "index_users_on_user_id_and_name", unique: true
   end
 
-  add_foreign_key "order_products", "orders", primary_key: "order_id"
-  add_foreign_key "orders", "users", primary_key: "user_id"
+  add_foreign_key "order_products", "orders"
+  add_foreign_key "orders", "users"
 end

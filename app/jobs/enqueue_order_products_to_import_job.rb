@@ -9,5 +9,7 @@ class EnqueueOrderProductsToImportJob
     lines = RedisService.get(file_content_key).lines.zip
 
     ImportOrderProductJob.perform_bulk(lines, batch_size: 1000)
+
+    RedisService.del(file_content_key)
   end
 end

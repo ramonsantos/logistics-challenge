@@ -27,12 +27,14 @@ RSpec.describe EnqueueOrderProductsToImportJob, type: :job do
     before do
       allow(RedisService).to receive(:get).with(file_content_key).and_return(file_content)
       allow(ImportOrderProductJob).to receive(:perform_bulk)
+      allow(RedisService).to receive(:del)
 
       job.perform(file_content_key)
     end
 
     it 'enqueues ImportOrderProductJob with the lines' do
       expect(ImportOrderProductJob).to have_received(:perform_bulk).with(expected_bulk_args, batch_size: 1000)
+      expect(RedisService).to have_received(:del).with(file_content_key)
     end
   end
 end
