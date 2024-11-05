@@ -11,5 +11,7 @@ Rails.application.routes.draw do
     resources :order_products, only: [] do
       post 'import', on: :collection
     end
+
+    resources :orders, only: [:index]
   end
 end
