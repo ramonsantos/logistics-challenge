@@ -16,6 +16,7 @@ gem 'versionist'
 group :development, :test do
   gem 'brakeman', require: false
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
+  gem 'kaminari'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rubocop'

@@ -26,12 +26,20 @@ class ListOrdersService < ApplicationService
   end
 
   def fetch_orders
-    orders = Order.includes(:order_products, :user).order(:order_id).limit(20)
+    orders = Order.includes(:order_products, :user).order(:order_id).page(page).per(per_page)
     orders = orders.where(orders: { date: (params[:start_date]).. }) if params[:start_date].present?
     orders = orders.where(orders: { date: ..(params[:end_date]) }) if params[:end_date].present?
     orders = orders.where(order_id: params[:order_id]) if params[:order_id].present?
 
     orders
+  end
+
+  def page
+    params[:page] || 1
+  end
+
+  def per_page
+    params[:per_page] || 25
   end
 
   def build_order(order)

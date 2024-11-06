@@ -3,6 +3,6 @@
 class V1::OrdersController < ApplicationController
   # GET /orders
   def index
-    render(json: ListOrdersService.call({}), status: :ok)
+    render(json: ListOrdersService.call(params), status: :ok)
   end
 end

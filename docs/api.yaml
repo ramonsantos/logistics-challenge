@@ -42,6 +42,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ImportOrderProductsResponseError'
+  /orders:
+    get:
+      tags:
+       - orders
+      summary: Fetch orders
+      description: Fetch orders.
+      operationId: fetchOrders
+      parameters:
+        - name: start_date
+          in: query
+          required: false
+          description: Start date
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          required: false
+          description: End date
+          schema:
+            type: string
+        - name: order_id
+          in: query
+          required: false
+          description: Order id
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          description: Number of page
+          schema:
+            type: string
+        - name: per_page
+          in: query
+          required: false
+          description: Number of items per page
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+
 components:
   schemas:
     ImportOrderProductsResponse:
@@ -73,3 +119,62 @@ components:
       example:
         errors:
           - title: "Error importing order product."
+    Orders:
+      type: array
+      items:
+        type: object
+        properties:
+          user_id:
+            type: integer
+            description: Id of book
+          name:
+            type: string
+            description: Type of entity
+          orders:
+              type: array
+              items:
+                type: object
+                properties:
+                  order_id:
+                    type: integer
+                    description: Id of order
+                  date:
+                    type: string
+                    description: Id of user
+                  total:
+                    type: string
+                    description: Total of order
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product_id:
+                          type: integer
+                          description: Id of product
+                        value:
+                          type: string
+                          description: Price of product
+      example:
+        - user_id: 1
+          name: "John Doe"
+          orders:
+            - order_id: 1
+              date: "2021-01-01"
+              total: "100.00"
+              products:
+                - product_id: 1
+                  value: "10.00"
+                - product_id: 2
+                  value: "20.00"
+        - user_id: 2
+          name: "Jane Doe"
+          orders:
+            - order_id: 2
+              date: "2021-01-02"
+              total: "200.00"
+              products:
+                - product_id: 3
+                  value: "30.00"
+                - product_id: 4
+                  value: "40.00"
