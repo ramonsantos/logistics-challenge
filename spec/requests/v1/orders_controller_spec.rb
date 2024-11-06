@@ -4,20 +4,24 @@ require 'rails_helper'
 
 RSpec.describe V1::OrdersController, type: :request do
   describe 'GET /orders' do
+    let(:parser_response_body) { JSON.parse(response.body, symbolize_names: true) }
+
     let(:user_1) { create(:user, user_id: 1) }
     let(:user_2) { create(:user, user_id: 2) }
     let(:user_3) { create(:user, user_id: 3) }
+    let(:user_4) { create(:user, user_id: 1, name: 'Tashia Schamberger') }
     let(:order_1) { create(:order, user: user_1, order_id: 1) }
     let(:order_2) { create(:order, user: user_2, order_id: 2) }
     let(:order_3) { create(:order, user: user_3, order_id: 3) }
     let(:order_4) { create(:order, user: user_1, order_id: 4) }
+    let(:order_5) { create(:order, user: user_4, order_id: 1, date: '2021-11-23') }
     let(:order_product_1) { create(:order_product, order: order_1) }
     let(:order_product_2) { create(:order_product, order: order_2) }
     let(:order_product_3) { create(:order_product, order: order_3) }
     let(:order_product_4) { create(:order_product, order: order_4) }
     let(:order_product_5) { create(:order_product, order: order_2) }
     let(:order_product_6) { create(:order_product, order: order_2) }
-    let(:parser_response_body) { JSON.parse(response.body, symbolize_names: true) }
+    let(:order_product_7) { create(:order_product, order: order_5) }
 
     let(:expected_body) do
       [
@@ -39,6 +43,23 @@ RSpec.describe V1::OrdersController, type: :request do
               date: '2021-11-16',
               products: [
                 { product_id: 111, value: '512.24' }
+              ]
+            }
+          ]
+        },
+        {
+          user_id: 1,
+          name: 'Tashia Schamberger',
+          orders: [
+            {
+              order_id: 1,
+              total: '',
+              date: '2021-11-23',
+              products: [
+                {
+                  product_id: 111,
+                  value: '512.24'
+                }
               ]
             }
           ]
@@ -83,6 +104,7 @@ RSpec.describe V1::OrdersController, type: :request do
       order_product_4
       order_product_5
       order_product_6
+      order_product_7
 
       get(orders_path)
     end
