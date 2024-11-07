@@ -39,6 +39,17 @@ services:
     environment:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
+  api_docs:
+    image: swaggerapi/swagger-ui
+    ports:
+      - 3001:8080
+    volumes:
+      - ./:/usr/share/nginx/html/docs/
+    environment:
+      - "URLS_PRIMARY_NAME=Logistics API"
+      - "URLS=[
+          {url: '/docs/docs/api.yaml', name: 'Logistics API'},
+        ]"
 volumes:
   redis-data:
   postgres-data:
